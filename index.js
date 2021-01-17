@@ -24,9 +24,10 @@ Use getFinals to do the following:
 hint - you should be looking at the stage key inside of the objects
 */
 
-function getFinals(/* code here */) {
-   /* code here */
-}
+function getFinals(data) {
+   let allFinals = data.filter((games) => games.Stage === 'Final')
+   return allFinals
+};
 
 
 
@@ -36,9 +37,13 @@ Use the higher-order function called getYears to do the following:
 2. Receive a callback function getFinals from task 2 
 3. Return an array called years containing all of the years in the getFinals data set*/
 
-function getYears(/* code here */) {
+function getYears(cb) {
+    const years = cb.map(function(item){
+        return item.Year
+    })
+    return years
     /* code here */
-}
+};
 
 
 
@@ -49,9 +54,19 @@ Use the higher-order function getWinners to do the following:
 3. Determines the winner (home or away) of each `finals` game. 
 4. Returns the names of all winning countries in an array called `winners` */ 
 
-function getWinners(/* code here */) {
-    /* code here */
+function getWinners(arr,cb) {
+let winners = cb(arr).map((element) => {
+    if (element['Home Team Goals'] > element['Away Team Goals']){
+        return element['Home Team Name']
+    } else return element['Away Team Name']
+
 }
+)
+return winners
+} 
+ 
+/* code here */
+
 
 
 
@@ -65,7 +80,12 @@ Use the higher-order function getWinnersByYear to do the following:
 hint: the strings returned need to exactly match the string in step 4.
  */
 
-function getWinnersByYear(/* code here */) {
+function getWinnersByYear(arr, cb1, cb2) {
+    let winnerByYear = cb1(arr).map((year,index) => 
+
+    `In ${year}, ${cb2(arr)[index]} won the world cup!`); 
+
+    return winnerByYear
     /* code here */
 }
 
@@ -81,8 +101,25 @@ Use the higher order function getAverageGoals to do the following:
  Example of invocation: getAverageGoals(getFinals(fifaData));
 */
 
-function getAverageGoals(/* code here */) {
-   /* code here */
+function getAverageGoals(cb){
+// return arr for home team goals
+let homeGoals = cb.map((home) => home['Home Team Goals']);
+// return arr for away team goals
+let awayGoals = cb.map((away) => away['Away Team Goals']);
+
+// adds all goals for home team
+let homeTotal = homeGoals.reduce((accumulator, currentValue) => accumulator + currentValue);
+
+
+// adds total goals for away team
+let awayTotal = awayGoals.reduce((accumulator, currentValue) => accumulator + currentValue);
+
+// takes both totals, adds together and returns adverage to 2nd decimal point  
+let totalAverage = ((homeTotal + awayTotal) / homeGoals.length).toFixed(2); 
+
+return totalAverage
+
+
 }
 
 
